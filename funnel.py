@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import feedparser
 import time, datetime
 import json
