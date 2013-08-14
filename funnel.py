@@ -32,7 +32,7 @@ def funnel(feeds, limit=100, **options):
                 'content':      entry.content[0].get('value'),
                 'updated':      entry.updated,
             })
-    sorted_entries = sorted(entries, key=lambda entry: entry["date_parsed"])
+    sorted_entries = sorted(entries, key=lambda entry: entry['date_parsed'])
     sorted_entries.reverse()
     if limit > 0:
         return sorted_entries[0:limit]
@@ -52,7 +52,7 @@ if __name__ == '__main__':
     import optparse
     import json, sys
 
-    parser = optparse.OptionParser(usage="%prog [options] URL1 [URL2 [...]]")
+    parser = optparse.OptionParser(usage='%prog [options] URL1 [URL2 [...]]')
     parser.add_option('--limit', '-L', dest='limit', type='int', default=100, help="""
     How many items to include in the output (default: %default)
     """.strip())
