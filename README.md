@@ -1,8 +1,9 @@
-# Funnel
-Funnel is a Python utility for aggregating multiple feed sources (RSS or Atom;
-anything that [feedparser](http://pythonhosted.org/feedparser/introduction.html)
-can handle) into JSON data sources that can be easily templatized into HTML or
-feed formats.
+# Feed Funnel
+Feed Funnel is a Python utility for aggregating multiple feed sources (RSS or
+Atom; anything that
+[feedparser](http://pythonhosted.org/feedparser/introduction.html) can handle)
+into JSON data sources that can be easily templatized into HTML or feed
+formats.
 
 ## Usage
 funnel.py takes one or more feed URLs as positional arguments and produces JSON
