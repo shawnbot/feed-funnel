@@ -19,17 +19,21 @@ def funnel(feeds, limit=100, **options):
         del feed['url']
         parsed = feedparser.parse(url, **feed)
         feed = {
-            'title': parsed.feed.title,
-            'href': get_href(parsed.feed.links)
+            'title': hasattr(parsed.feed, 'title') and parsed.feed.title or '',
+            'href': hasattr(parsed.feed, 'links') and get_href(parsed.feed.links) or ''
         }
         for entry in parsed.entries:
+            try:
+                content = entry.content[0].get('value')
+            except:
+                content = entry.summary_detail.get('value')
             entries.append({
                 'feed':         feed,
                 'title':        entry.title,
                 'href':         get_href(entry.links),
                 'date_parsed':  entry.date_parsed,
                 'author':       entry.author,
-                'content':      entry.content[0].get('value'),
+                'content':      content,
                 'updated':      entry.updated,
             })
     sorted_entries = sorted(entries, key=lambda entry: entry['date_parsed'])
@@ -39,7 +43,7 @@ def funnel(feeds, limit=100, **options):
     return sorted_entries
 
 def get_href(links, _type='text/html'):
-    filtered = filter(lambda ln: ln['type'] == _type, links)
+    filtered = filter(lambda ln: ln.get('type') == _type, links)
     return len(filtered) and filtered[0].get('href') or None
 
 class FeedJSONEncoder(json.JSONEncoder):
