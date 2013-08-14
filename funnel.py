@@ -28,6 +28,7 @@ def funnel(feeds, limit=100, **options):
                 'title':        entry.title,
                 'href':         get_href(entry.links),
                 'date_parsed':  entry.date_parsed,
+                'author':       entry.author,
                 'content':      entry.content[0].get('value'),
                 'updated':      entry.updated,
             })
@@ -43,11 +44,8 @@ def get_href(links, _type='text/html'):
 
 class FeedJSONEncoder(json.JSONEncoder):
     def default(self, d):
-        if type(d) is object:
-            return {'foo': 'bar'}
         if type(d) is time.struct_time:
             return time.strftime('%X', d)
-        print 'uh-oh:', d
         return d
 
 if __name__ == '__main__':
