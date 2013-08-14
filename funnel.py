@@ -54,9 +54,15 @@ if __name__ == '__main__':
     import optparse
     import json, sys
 
-    parser = optparse.OptionParser()
-    parser.add_option('--limit', '-L', dest='limit', type='int', default=0)
+    parser = optparse.OptionParser(usage="%prog [options] URL1 [URL2 [...]]")
+    parser.add_option('--limit', '-L', dest='limit', type='int', default=100, help="""
+    How many items to include in the output (default: %default)
+    """.strip())
     options, urls = parser.parse_args()
+
+    if len(urls) == 0:
+        parser.print_help()
+        sys.exit(1)
 
     entries = funnel(urls, limit=options.limit)
     json.dump(entries, sys.stdout, separators=(', ', ': '), indent=2, cls=FeedJSONEncoder)
