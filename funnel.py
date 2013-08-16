@@ -36,7 +36,7 @@ def funnel(feeds, limit=100, **options):
                 'content':      content,
                 'updated':      entry.updated,
             })
-    sorted_entries = sorted(entries, key=lambda entry: entry['date_parsed'])
+    sorted_entries = sorted(entries, key=lambda entry: entry['updated'])
     sorted_entries.reverse()
     if limit > 0:
         return sorted_entries[0:limit]
