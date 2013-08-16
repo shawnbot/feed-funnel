@@ -1,7 +1,12 @@
 #!/usr/bin/env python
 import feedparser
-import time, datetime
+from dateutil.parser import parser as dateutil_parser
 import json
+
+parse_date = dateutil_parser().parse
+def coerce_date_str(date_str):
+    parsed = parse_date(date_str)
+    return parsed.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 def funnel(feeds, limit=100, **options):
     def to_feed(feed):
@@ -31,13 +36,12 @@ def funnel(feeds, limit=100, **options):
                 'feed':         feed,
                 'title':        entry.title,
                 'href':         get_href(entry.links),
-                'date_parsed':  entry.date_parsed,
-                'author':       entry.author,
-                'content':      content,
                 'updated':      entry.updated,
+                'date':         coerce_date_str(entry.updated),
+                'author':       entry.author,
+                'content':      content
             })
-    sorted_entries = sorted(entries, key=lambda entry: entry['updated'])
-    sorted_entries.reverse()
+    sorted_entries = sorted(entries, key=lambda entry: entry['date'], reverse=True)
     if limit > 0:
         return sorted_entries[0:limit]
     return sorted_entries
